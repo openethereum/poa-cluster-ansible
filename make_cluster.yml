@@ -1,0 +1,7 @@
+- hosts:
+    - manager
+    - worker
+  roles:
+    - { role: base, tags: "base" }
+    - { role: docker, tags: "docker" }
+    - { role: docker-swarm, tags: "docker-swarm" }

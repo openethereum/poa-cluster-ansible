@@ -1,0 +1,24 @@
+- name: Init swarm
+  shell: docker swarm init --advertise-addr {{ ansible_eth0.ipv4.address }}
+  when: inventory_hostname in groups['manager']
+
+- name: Get worker join token
+  shell: docker swarm join-token -q worker
+  when: inventory_hostname in groups['manager']
+  register: worker_join_token_out
+  tags:
+    - connect-workers
+
+- set_fact:
+    worker_join_token: "{{ worker_join_token_out.stdout }}"
+  when: inventory_hostname in groups['manager']
+  tags:
+    - connect-workers
+
+
+- name: Add worker nodes
+  shell: docker swarm join --token "{{ hostvars[groups['manager'][0]].worker_join_token }}" "{{ hostvars[groups['manager'][0]].ansible_eth0.ipv4.address }}"
+  when: inventory_hostname in groups['worker']
+  tags:
+    - connect-workers
+

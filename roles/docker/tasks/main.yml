@@ -1,0 +1,19 @@
+- name: update software
+  apt: update_cache=yes
+  become: true
+
+- name: install dependencies
+  apt: state=present pkg={{ item }}
+  with_items:
+    - linux-image-virtual
+    - linux-image-extra-virtual
+    - dmsetup
+  become: true
+
+- shell: dmsetup mknodes
+  become: yes
+
+- name: install docker
+  shell: curl -sSL https://get.docker.com/ | sh
+  become: yes
+  

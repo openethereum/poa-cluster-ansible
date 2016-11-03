@@ -1,0 +1,6 @@
+ansible_user: root
+base_dir: "{{ ansible_env.HOME }}"
+
+
+
+
