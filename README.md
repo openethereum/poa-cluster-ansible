@@ -2,7 +2,7 @@
 
 A collection of Ansible scripts used in setting up a cluster of Parity nodes.
 
-Currently allows to set up a Docker Swarm cluster on a number of target hosts.
+Currently allows to set up a Docker Swarm Mode cluster on a number of target hosts.
 
 ## Usage
 
@@ -36,4 +36,5 @@ This should initialise a new Docker Swarm and connect all listed hosts into a si
 ## Notes
 
 * All target hosts have to be running Ubuntu 16.04
+* A seriously awesome 4-part tutorial on Docker Swarm Mode: https://lostechies.com/gabrielschenker/2016/09/05/docker-and-swarm-mode-part-1/
 
