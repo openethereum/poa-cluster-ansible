@@ -1,3 +1,5 @@
-- name: update software
-  apt: update_cache=yes
-  become: true
+- include: ubuntu.yml
+  when: ansible_distribution == "Ubuntu"
+  
+- include: centos.yml
+  when: ansible_distribution == "Centos"

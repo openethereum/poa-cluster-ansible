@@ -1,0 +1,8 @@
+- name: Install docker
+  apk: name=docker update_cache=yes
+
+- name: Start docker daemon at boot
+  shell: rc-update add docker boot
+
+- name: Start the docker service
+  service: name=docker state=started

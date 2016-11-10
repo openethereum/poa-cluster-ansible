@@ -1,0 +1,10 @@
+- hosts: all
+  gather_facts: no
+  tasks:
+    - name: wait for port 22 to be ready
+      local_action: wait_for port=22 host="{{ inventory_hostname }}"
+    - name: enable community repos
+      raw: printf "http://nl.alpinelinux.org/alpine/latest-stable/main\nhttp://nl.alpinelinux.org/alpine/edge/community\n" > /etc/apk/repositories
+    - raw: apk update
+    - name: install python
+      raw: apk add python

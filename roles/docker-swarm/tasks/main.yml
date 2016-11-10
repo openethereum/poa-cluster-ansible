@@ -1,5 +1,13 @@
+- name: Get private IP (Alpine)
+  set_fact: host_eth0_address="{{ ansible_default_ipv4.address }}"
+  when: ansible_distribution == "Alpine"
+
+- name: Get private IP (Alpine)
+  set_fact: host_eth0_address="{{ ansible_eth0.ipv4.address }}"
+  when: ansible_distribution != "Alpine"
+
 - name: Init swarm
-  shell: docker swarm init --advertise-addr {{ ansible_eth0.ipv4.address }}
+  shell: docker swarm init --advertise-addr {{ host_eth0_address }}
   when: inventory_hostname in groups['manager']
 
 - name: Get worker join token
@@ -17,7 +25,7 @@
 
 
 - name: Add worker nodes
-  shell: docker swarm join --token "{{ hostvars[groups['manager'][0]].worker_join_token }}" "{{ hostvars[groups['manager'][0]].ansible_eth0.ipv4.address }}"
+  shell: docker swarm join --token "{{ hostvars[groups['manager'][0]].worker_join_token }}" "{{ hostvars[groups['manager'][0]].host_eth0_address }}"
   when: inventory_hostname in groups['worker']
   tags:
     - connect-workers

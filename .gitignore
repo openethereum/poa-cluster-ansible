@@ -1,1 +1,3 @@
-group_vars
+group_vars/*
+logs
+*.retry

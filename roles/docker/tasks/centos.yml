@@ -1,0 +1,8 @@
+- name: udpate software
+  yum: name=* state=latest
+  become: true
+
+- name: install docker (experimental)
+  shell: curl -sSL https://experimental.docker.com/ | sh
+  become: yes
+  
