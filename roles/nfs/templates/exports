@@ -1,0 +1,1 @@
+{{ shared_dir }} {% for host in groups["all"] %} {{ host }}(rw,async,no_subtree_check,no_root_squash) {% endfor %}

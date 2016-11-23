@@ -1,0 +1,24 @@
+- name: install nfs
+  apk: name=nfs-utils update_cache=yes
+
+- name: create a shared directory at "{{ shared_dir }}"
+  file: path="{{ shared_dir }}" state=directory mode=0755
+
+- name: configure the server to share "{{ shared_dir }}"
+  template: src=exports dest=/etc/exports
+  when: inventory_hostname in groups['manager']
+
+- name: start nfs on boot
+  shell: rc-update add nfs
+  when: inventory_hostname in groups['manager']
+
+- name: restart nfs
+  service: name=nfs state=restarted
+
+- name: automatically mount on reboot
+  lineinfile: dest=/etc/fstab line="{{groups['manager'][0]}}:{{ shared_dir }}  {{ shared_dir }} nfs  auto  0  0"
+  when: inventory_hostname in groups['worker']
+
+- name: mount "{{ shared_dir }}" on the clients
+  shell: mount -t nfs -o proto=tcp,port=2049 "{{groups['manager'][0]}}:{{ shared_dir }}" "{{ shared_dir }}"
+  when: inventory_hostname not in groups["manager"]
