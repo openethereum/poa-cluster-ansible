@@ -1,0 +1,5 @@
+- name: synchronise ntpd
+  shell: ntpd -qp "{{ ntpd_peer_address }}"
+
+- name: restart nptd
+  service: name=ntpd state=restarted

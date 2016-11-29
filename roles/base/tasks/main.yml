@@ -3,3 +3,7 @@
   
 - include: centos.yml
   when: ansible_distribution == "Centos"
+
+- include: alpine.yml
+  when: ansible_distribution == "Alpine"
+  
